@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require 'date'
+
+if ARGV[0] == "usage"
+  puts "  Status Report:"
+  puts "    status"
+  puts "      Generates a report of tasks completed Yesterday and Today. Then lists all A priority tasks"
+  puts "  "
+
+else
+
+  today = Date.today
+  todays_completed = []
+  repeat = 80
+
+  #read DONE file
+  done = File.read(ENV['DONE_FILE'])
+  done = done.split($/)
+  done.reverse!
+
+  # ==============================
+  #    generate YESTERDAY's List
+  # ==============================
+
+  #define 'yesterday' as the last date on the done file that is not 'today'
+  i = 0
+  begin
+      data = /x\s(?<date>\d{4}-\d{2}-\d{2})\s(?<task>.*)/.match(done[i]);
+      yesterday  = Date.strptime(data[:date], '%Y-%m-%d')
+      i += 1
+  end until today != yesterday
+
+  puts "\n"
+  puts "=" * repeat
+  puts " Yesterday: #{yesterday}"
+  puts "-" * repeat
+
+  #dump out the list
+  done.each { |item|
+      data =  /x\s(?<date>\d{4}-\d{2}-\d{2})\s(?<task>.*)/.match(item)
+      task_date = Date.strptime(data[:date], '%Y-%m-%d')
+      #puts task_date
+      if task_date == yesterday 
+          puts "#{data[:task]}"
+      elsif task_date == today
+          todays_completed.push(data[:task])       
+      end
+  }
+
+  puts "=" * repeat
+  puts " Today: #{today}"
+  puts "-" * repeat
+  #dumpe TODAY's COMPELTED
+  todays_completed.each { |task|
+      puts "#{task}"
+  }
+  puts "=" * repeat
+
+  exec '$TODO_SH lsp A'
+end
