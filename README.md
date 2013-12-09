@@ -1,7 +1,7 @@
 todotxt-status
 ==============
 
-Todo.txt Status is based on a Ruby script by civrot (https://github.com/civrot/todo_txt_actions) to display a standup task list in the Todo.txt http://todotxt.com/ Todo.txt ecosystem.
+Todo.txt Status is based on a Ruby script by civrot (https://github.com/civrot/todo_txt_actions) to display a standup task list in the Todo.txt (http://todotxt.com/) ecosystem.
 
 I tweaked his script to display yesterday's completed tasks, today's completed tasks, and then a display of the "A" level priority tasks. So it looks like this:
 
